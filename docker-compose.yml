@@ -1,0 +1,16 @@
+version: '3'
+services:
+  server:
+    container_name: Formify
+    entrypoint: yarn start
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - '3458:3458'
+

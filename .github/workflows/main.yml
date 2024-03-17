@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  checkout:
+    runs-on: self-hosted
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+  prepare-environment:
+    runs-on: self-hosted
+    needs: checkout
+    steps:
+      - name: Stop and remove containers, networks
+        run: |
+          if docker ps -a | grep Formify ; then
+            docker rm -f Formify
+          else
+            echo "Container Formify does not exist"
+          fi
+  deploy:
+    runs-on: self-hosted
+    needs: prepare-environment
+    env:
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+    steps:
+      - name: docker-compose
+        run: |
+          docker-compose build --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} --build-arg CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+          docker-compose up -d
