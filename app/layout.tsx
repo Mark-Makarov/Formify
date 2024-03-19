@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { ClerkProvider } from '@clerk/nextjs'
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
+import Layout from "@/app/(dashboard)/layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <Layout>
+              {children}
+            </Layout>
           </ThemeProvider>
         </body>
       </html>
