@@ -1,12 +1,20 @@
-import { GetFormStats } from "@/actions/form";
+import { GetForms, GetFormStats } from "@/actions/form";
 import { LuView } from "react-icons/lu";
-import { FaWpforms } from "react-icons/fa"
-import { TbArrowBounce } from "react-icons/tb"
-import { HiCursorClick } from "react-icons/hi"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FaWpforms } from "react-icons/fa";
+import { TbArrowBounce } from "react-icons/tb";
+import { HiCursorClick } from "react-icons/hi";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
+import CreateFormButton from "@/components/CreateFormButton";
+import { Form } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
+import { formatDistance } from "date-fns";
+import { ru } from 'date-fns/locale';
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 export default function Home() {
   return (
@@ -17,6 +25,12 @@ export default function Home() {
       <Separator className="my-6" />
       <h2 className="text-4xl font-bold col-span-2">Ваши формы</h2>
       <Separator className="my-6" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <CreateFormButton />
+        <Suspense fallback={<FormCardSkeleton count={5} />}>
+          <FormCardsList />
+        </Suspense>
+      </div>
     </div>
   );
 };
@@ -106,4 +120,84 @@ const CardStatsWrapper = async () => {
   const stats = await GetFormStats();
 
   return <StatsCardsList data={stats} loading={false} />
+}
+
+const FormCardSkeleton = ({ count = 1 }) => {
+  return (
+    <>
+      {Array.from({ length: count }, (_, index) => index).map((number) => (
+        <Skeleton
+          key={number}
+          className='border-primary-/20 h-[190px] w-full border-2'
+        />
+      ))}
+    </>
+  );
+};
+
+const FormCard = ({ form: {
+  createdAt,
+  published,
+  name,
+  visits,
+  submissions,
+  description,
+  id,
+}}: { form: Form }) => {
+  const { forms } = process.env.routes;
+
+  const formattedCreatedAt = formatDistance(createdAt, new Date(), {
+    locale: ru,
+    addSuffix: true,
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className='flex items-center justify-between gap-2'>
+          <span className='truncate font-bold'>{name}</span>
+          {published ? (
+            <Badge>Опубликовано</Badge>
+          ) : (
+            <Badge variant='destructive'>Черновик</Badge>
+          )}
+        </CardTitle>
+        <CardDescription>
+          {formattedCreatedAt}
+          {published && (
+            <span className="flex items-center gap-2">
+              <LuView className="text-muted-foreground" />
+              <span>{visits.toLocaleString()}</span>
+              <FaWpforms className="text-muted-foreground" />
+              <span>{submissions.toLocaleString()}</span>
+            </span>
+          )}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="h-[20px] truncate text-sm text-muted-foreground">
+        {description || "Описание отсутствует"}
+      </CardContent>
+      <CardFooter>
+        {published && (
+          <Button asChild className="w-full mt-2 text-md gap-4">
+            <Link href={`${forms}/${id}`} >
+              Посмотреть заявки <BiRightArrowAlt className="scale-[1.5]" />
+            </Link>
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
+  );
+};
+
+const FormCardsList = async () => {
+  const forms = await GetForms();
+
+  return (
+    <>
+      {forms.map((form) => (
+        <FormCard key={form.id} form={form} />
+      ))}
+    </>
+  )
 }

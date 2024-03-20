@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
 import Layout from "@/app/(dashboard)/layout";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Layout>
               {children}
             </Layout>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>
