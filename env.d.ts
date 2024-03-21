@@ -5,6 +5,7 @@ declare namespace NodeJS {
       signUp: string,
       main: string,
       forms: string,
+      builder: string,
     };
   }
 }

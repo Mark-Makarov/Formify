@@ -3,4 +3,5 @@ module.exports = {
   signUp: "/sign-up",
   main: "/",
   forms: "/forms",
+  builder: "/builder",
 };

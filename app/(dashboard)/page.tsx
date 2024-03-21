@@ -1,6 +1,6 @@
 import { GetForms, GetFormStats } from "@/actions/form";
 import { LuView } from "react-icons/lu";
-import { FaWpforms } from "react-icons/fa";
+import { FaEdit, FaWpforms } from "react-icons/fa";
 import { TbArrowBounce } from "react-icons/tb";
 import { HiCursorClick } from "react-icons/hi";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -144,7 +144,7 @@ const FormCard = ({ form: {
   description,
   id,
 }}: { form: Form }) => {
-  const { forms } = process.env.routes;
+  const { forms, builder } = process.env.routes;
 
   const formattedCreatedAt = formatDistance(createdAt, new Date(), {
     locale: ru,
@@ -178,10 +178,16 @@ const FormCard = ({ form: {
         {description || "Описание отсутствует"}
       </CardContent>
       <CardFooter>
-        {published && (
+        {published ? (
           <Button asChild className="w-full mt-2 text-md gap-4">
             <Link href={`${forms}/${id}`} >
               Посмотреть заявки <BiRightArrowAlt className="scale-[1.5]" />
+            </Link>
+          </Button>
+        ) : (
+          <Button asChild variant="secondary" className="w-full mt-2 text-md gap-4">
+            <Link href={`${builder}/${id}`} >
+              Редактировать <FaEdit className="scale-[1.3]" />
             </Link>
           </Button>
         )}

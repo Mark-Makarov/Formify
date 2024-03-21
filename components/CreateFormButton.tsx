@@ -27,12 +27,16 @@ import { toast } from "@/components/ui/use-toast";
 import { formSchema, formSchemaType } from "@/schemas/form";
 import { CreateForm } from "@/actions/form";
 import { BsFileEarmarkPlus } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 // TODO: decompose
 const CreateFormButton = () => {
+  const { builder } = process.env.routes;
+  const router = useRouter();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
+
   const {
     control,
     handleSubmit,
@@ -46,6 +50,8 @@ const CreateFormButton = () => {
         title: "Успешно!",
         description: "Новая форма успешно создана",
       })
+
+      router.push(`${builder}/${formId}`)
     } catch (error) {
       toast({
         title: "Ошибка",

@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import { ClerkProvider } from '@clerk/nextjs'
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
-import Layout from "@/app/(dashboard)/layout";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,9 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             enableSystem
             disableTransitionOnChange
           >
-            <Layout>
-              {children}
-            </Layout>
+            {children}
             <Toaster />
           </ThemeProvider>
         </body>
