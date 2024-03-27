@@ -8,8 +8,10 @@ import {
 import { SidebarButtonElementDragOverlay } from "@/components/SidebarButtonElement";
 import { AiOutlineStop } from "react-icons/ai";
 import { ElementsType, FormElements } from "@/components/FormElements";
+import useDesignContext from "@/hooks/useDesign";
 
 const DragOverlayWrapper = () => {
+  const { elements } = useDesignContext();
   const [draggedItem, setDraggedItem] = useState<Active | null>(null);
 
   useDndMonitor({
@@ -29,11 +31,29 @@ const DragOverlayWrapper = () => {
   }
 
   let node = <AiOutlineStop className="flex flex-col items-center justify-center scale-[2]" />;
-  const isSidebarButtonElement = draggedItem?.data?.current?.isDesignButtonElement;
 
+  const isSidebarButtonElement = draggedItem?.data?.current?.isDesignButtonElement;
   if (isSidebarButtonElement) {
     const type = draggedItem.data?.current?.type as ElementsType;
     node = <SidebarButtonElementDragOverlay formElement={FormElements[type]} />
+  }
+
+  const isDesignElement = draggedItem?.data?.current?.isDesignElement;
+  if (isDesignElement) {
+    const elementId = draggedItem?.data?.current?.elementId;
+    const element = elements.find((element) => (element.id === elementId))
+
+    if (!element) {
+      node = <div>Элемент не найден!</div>
+    } else {
+      const DesignElementComponent = FormElements[element.type].designComponent;
+      node = (
+        <div className="flex bg-accent border rounded-md h-[120px] w-full py-2 px-4
+        opacity-80 pointer pointer-events-none z-10">
+          <DesignElementComponent elementInstance={element} />
+        </div>
+      )
+    }
   }
 
   return (

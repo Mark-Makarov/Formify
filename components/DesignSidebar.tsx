@@ -1,14 +1,18 @@
-import { FormElements } from "@/components/FormElements";
-import SidebarButtonElement from "@/components/SidebarButtonElement";
+import useDesignContext from "@/hooks/useDesign";
+import FormElementsSidebar from "@/components/FormElementsSidebar";
+import PropertiesFormSidebar from "@/components/PropertiesFormSidebar";
 
 const DesignSidebar = () => {
-  const { TextField,} = FormElements;
+  const { selectedElement } = useDesignContext();
 
   return (
     <aside className="w-[400px] max-w-[400px] flex flex-col flex-grow gap-2
     border-l-2 border-muted p-4 bg-background overflow-y-auto h-full">
-      Элементы
-      <SidebarButtonElement formElement={TextField} />
+      {selectedElement ? (
+        <PropertiesFormSidebar />
+      ) : (
+        <FormElementsSidebar />
+      )}
     </aside>
   );
 };

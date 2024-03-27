@@ -1,23 +1,22 @@
 import { TextFieldFormElement } from "@/components/fields/TextField";
-import { IconType } from "react-icons";
 
 export type ElementsType = "TextField";
 
 export type FormElement = {
   type: ElementsType,
-  construct: (id:string) => FormElementsInstance;
+  construct: (id:string) => FormElementInstance;
 
-  designComponent: React.FC,
+  designComponent: React.FC<{elementInstance: FormElementInstance}>,
   designButtonElement: {
     icon: React.ElementType,
     label: string,
   },
 
-  formComponent: React.FC
-  propertiesComponent: React.FC,
+  formComponent: React.FC<{elementInstance: FormElementInstance}>,
+  propertiesComponent: React.FC<{elementInstance: FormElementInstance}>,
 };
 
-export type FormElementsInstance = {
+export type FormElementInstance = {
   id: string,
   type: ElementsType,
   extraAttributes?: Record<string, any>

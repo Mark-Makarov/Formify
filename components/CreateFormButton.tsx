@@ -35,6 +35,7 @@ const CreateFormButton = () => {
   const router = useRouter();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   const {

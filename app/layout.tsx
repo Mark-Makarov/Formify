@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import DesignContextProvider from "@/components/context/DesignContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,15 +18,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <ClerkProvider localization={ruRU}>
       <html lang="ru">
         <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <DesignContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </DesignContextProvider>
         </body>
       </html>
     </ClerkProvider>
