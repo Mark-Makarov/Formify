@@ -5,6 +5,7 @@ import { createContext, useState } from "react";
 
 export type DesignContextType = {
   elements: FormElementInstance[],
+  setElements: React.Dispatch<React.SetStateAction<FormElementInstance[]>>,
   addElement: (index: number, element: FormElementInstance) => void,
   removeElement: (id: string) => void,
   selectedElement: FormElementInstance | null,
@@ -45,6 +46,7 @@ export default function DesignContextProvider({ children }: { children: React.Re
     <DesignContext.Provider
       value={{
         elements,
+        setElements,
         addElement,
         removeElement,
         selectedElement,
