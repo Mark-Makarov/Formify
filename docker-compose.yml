@@ -2,7 +2,7 @@ version: '3'
 services:
   nextjs:
     container_name: Formify
-    entrypoint: yarn start
+    entrypoint: yarn start:prod
     restart: always
     build:
       context: .
@@ -14,14 +14,15 @@ services:
     ports:
       - '3458:3458'
     depends_on:
-      - Postgres
+      - postgres
 
   postgres:
     container_name: Postgres
     image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=$POSTGRES_USER
-      - POSTGRES_PASSWORD=$POSTGRES_USER
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
     ports:
       - '5432:5432'
+

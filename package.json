@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3457",
-    "lint": "next lint"
+    "start": "next start -p 3458",
+    "start:prod": "yarn migrate:prisma && next start -p 3458",
+    "lint": "next lint",
+    "generate:prisma": "npx prisma generate",
+    "migrate:prisma": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@clerk/localizations": "^1.26.16",

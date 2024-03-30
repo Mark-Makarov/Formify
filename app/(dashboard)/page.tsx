@@ -63,7 +63,7 @@ const StatsCard = ({
         <div className="text-2xl font-bold">
           {loading ? (
             <Skeleton>
-              <span className="opacity-0">""</span>
+              <span className="opacity-0"> </span>
             </Skeleton>
           ) : value}
         </div>

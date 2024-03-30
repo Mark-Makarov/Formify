@@ -1,4 +1,4 @@
-import { GetFormById } from "@/actions/form";
+import { GetFormById, GetFromWithSubmissions } from "@/actions/form";
 import VisitFormButton from "@/components/VisitFormButton";
 import FormLinkShare from "@/components/FormLinkShare";
 import { LuView } from "react-icons/lu";
@@ -6,6 +6,8 @@ import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { StatsCard } from "@/app/(dashboard)/page";
+import { ElementsType, FormElementInstance } from "@/components/FormElements";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface FormDetailPageProps {
   id: string,
@@ -89,10 +91,89 @@ const FormDetailPage = async ({ params }: { params: FormDetailPageProps }) => {
 
 export default FormDetailPage;
 
-const SubmissionsTable = ({ id }: { id: string }) => {
+type Column = {
+  id: string;
+  label: string;
+  required: boolean;
+  type: ElementsType;
+};
+
+type Row = { [key: string]: string } & { submittedAt: Date };
+
+const SubmissionsTable = async ({ id }: { id: string }) => {
+  const form = await GetFromWithSubmissions(Number(id));
+  if (!form) {
+    // TODO: extract error messages types to constants
+    throw new Error("form not found")
+  }
+
+  const formElements = JSON.parse(form.content) as FormElementInstance[];
+
+  const columns: Column[]  = [];
+  formElements.forEach(element => {
+    switch (element.type) {
+      case "TextField":
+        columns.push({
+          id: element.id,
+          label: element.extraAttributes?.label,
+          required: element.extraAttributes?.required,
+          type: element.type,
+        })
+        break;
+
+      default: break;
+    }
+  });
+
+  const rows: Row[] = [];
+  form.FormSubmissons.forEach((submission) => {
+    const content = JSON.parse(submission.content);
+    rows.push({
+      ...content,
+      submittedAt: submission.createdAt,
+    });
+  });
+
   return (
-    <h1 className="text-2xl font-bold my-4">
-      Заявки
-    </h1>
+    <>
+      <h1 className="text-2xl font-bold my-4">
+        Заявки
+      </h1>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns.map(column => (
+                <TableHead
+                  key={column.id}
+                  className="uppercase"
+                >
+                  {column.label}
+                </TableHead>
+              ))}
+              <TableHead
+                className="text-muted-foreground text-right uppercase"
+              >
+                Отправлено:
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow key={index}>
+                {columns.map(column => (
+                  <RowCell
+                    key={column.id}
+                    type={column.type}
+                    value={row[column.id]}
+                  />
+                ))}
+
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   )
 }

@@ -1,13 +1,18 @@
 "use client";
 
-import { ElementsType, FormElement, FormElementInstance } from "@/components/FormElements";
+import {
+  ElementsType,
+  FormElement,
+  FormElementInstance,
+  SubmitFunction,
+} from "@/components/FormElements";
 import { MdTextFields } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useDesignContext from "@/hooks/useDesign";
 import {
   Form,
@@ -19,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 const type: ElementsType = "TextField";
 
@@ -58,9 +64,16 @@ export const TextFieldFormElement: FormElement = {
     label: "Заголовок",
   },
 
-
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
+
+  validate: (formElement: FormElementInstance, currentValue: string): boolean => {
+    const element = formElement as CustomInstance;
+    if (element.extraAttributes.required) {
+      return currentValue.length > 0
+    }
+    return true;
+  }
 };
 
 type CustomInstance = FormElementInstance & {
@@ -90,20 +103,53 @@ function DesignComponent({ elementInstance }: { elementInstance: FormElementInst
 }
 
 
-function FormComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function FormComponent({
+  elementInstance,
+  submitValue,
+  isInvalid,
+  defaultValues,
+}: {
+  elementInstance: FormElementInstance,
+  submitValue?: SubmitFunction,
+  isInvalid?: boolean,
+  defaultValues?: string,
+}) {
+  const [value, setValue] = useState(defaultValues || "");
+  const [error, setError] = useState(false);
+
+  useEffect(() => setError(Boolean(isInvalid)), [isInvalid])
+
   const element = elementInstance as CustomInstance;
   const { label, required, placeHolder, helperText } = element.extraAttributes;
 
+  const onBlurInputHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!submitValue) return;
+
+    const valid = TextFieldFormElement.validate(element, e.target.value);
+    setError(!valid);
+    if (!valid) return;
+
+    submitValue(element.id, e.target.value);
+  };
+
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <Label>
+    <div className="flex w-full flex-col gap-2">
+      <Label className={cn(error && "text-red-500")}>
         {label}
         {required && "*"}
       </Label>
-      <Input placeholder={placeHolder}
+      <Input
+        className={cn(error && "border-red-500")}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={(e) => onBlurInputHandler(e)}
+        placeholder={placeHolder}
+        value={value}
       />
       {helperText && (
-        <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
+        <p className={cn("text-[0.8rem] text-muted-foreground",
+          error && "text-red-500")}>
+          {helperText}
+        </p>
       )}
     </div>
   );
