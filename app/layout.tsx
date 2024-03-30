@@ -6,6 +6,7 @@ import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import DesignContextProvider from "@/components/context/DesignContext";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <ClerkProvider localization={ruRU}>
       <html lang="ru">
         <body className={inter.className}>
+          <NextTopLoader />
           <DesignContextProvider>
             <ThemeProvider
               attribute="class"

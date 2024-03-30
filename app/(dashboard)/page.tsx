@@ -73,6 +73,8 @@ const StatsCard = ({
   )
 };
 
+export { StatsCard };
+
 interface StatsCardsListProps {
   data?: Awaited<ReturnType<typeof GetFormStats>>,
   loading: boolean,

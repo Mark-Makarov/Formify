@@ -65,7 +65,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
     )
   }
 
-  // TODO: refactor shareUrl
+  // TODO: refactor shareUrl with another places
   const formShareUrl = `${window.location.origin}/submit/${shareUrl}`;
 
   const handleCopyShareUrl = () => {

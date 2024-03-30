@@ -21,8 +21,6 @@ const PublishFormButton = ({ id }: { id: number }) => {
   const [isLoading, startTransition] = useTransition();
 
   const handlePublishForm = async () => {
-
-
     try {
       await PublishForm(id)
 
