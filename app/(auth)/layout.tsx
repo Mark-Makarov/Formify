@@ -10,7 +10,7 @@ const Layout = ({ children } : { children: React.ReactNode }) => {
           <ThemeSwitcher />
         </div>
       </nav>
-      <main className="flex w-full flex-grow">
+      <main className="flex w-full flex-grow justify-center items-center">
         {children}
       </main>
     </div>

@@ -7,7 +7,8 @@ import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { StatsCard } from "@/app/(dashboard)/page";
 import { ElementsType, FormElementInstance } from "@/components/FormElements";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { formatDistance } from "date-fns";
 
 interface FormDetailPageProps {
   id: string,
@@ -168,12 +169,28 @@ const SubmissionsTable = async ({ id }: { id: string }) => {
                     value={row[column.id]}
                   />
                 ))}
-
+                <TableCell
+                  className="text-muted-foreground text-right"
+                >
+                  {formatDistance(row.submittedAt, new Date(), { addSuffix: true })}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
     </>
+  )
+}
+
+const RowCell = ({ type, value }: { type: ElementsType, value: string }) => {
+  let node: React.ReactNode = value;
+
+
+
+  return (
+    <TableCell>
+      {node}
+    </TableCell>
   )
 }

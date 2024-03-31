@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const Error = ({ error }: { error: Error }) => {
+const Error = () => {
   const { main } = process.env.routes;
 
   return (

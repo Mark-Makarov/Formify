@@ -25,14 +25,18 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { BsTextareaResize } from "react-icons/bs";
+import { Textarea } from "@/components/ui/textarea";
+import { Slider } from "@/components/ui/slider";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "TextAreaField";
 
 const extraAttributes = {
-    label: "Этикетка",
+    label: "Поле ввода",
     helperText: "Подсказка",
     required: false,
     placeHolder: "Заполнитель",
+    rows: 3,
   };
 
 // TODO: translate errors
@@ -41,16 +45,10 @@ const propertiesSchema = z.object({
   helperText: z.string().max(200),
   required: z.boolean().default(false),
   placeHolder: z.string().max(50),
+  rows: z.number().min(1).max(10),
 });
 
-export const formSchema = z.object({
-  name: z.string({required_error: "Введите название формы"})
-    .min(1, { message: "Название формы не может быть пустым" })
-    .max(40, { message: "Название формы слишком длинное"}),
-  description: z.string().max(500, { message: "Описание формы слишком длинное"}).optional(),
-});
-
-export const TextFieldFormElement: FormElement = {
+export const TextAreaFieldFormElement: FormElement = {
   type,
   construct: (id:string) => ({
     id,
@@ -60,8 +58,8 @@ export const TextFieldFormElement: FormElement = {
 
   designComponent: DesignComponent,
   designButtonElement: {
-    icon: MdTextFields,
-    label: "Этикетка",
+    icon: BsTextareaResize,
+    label: "Поле ввода",
   },
 
   formComponent: FormComponent,
@@ -82,7 +80,13 @@ type CustomInstance = FormElementInstance & {
 
 function DesignComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { label, required, placeHolder, helperText } = element.extraAttributes;
+  const {
+    label,
+    required,
+    placeHolder,
+    helperText,
+    rows,
+  } = element.extraAttributes;
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -90,7 +94,7 @@ function DesignComponent({ elementInstance }: { elementInstance: FormElementInst
         {label}
         {required && "*"}
       </Label>
-      <Input
+      <Textarea
         readOnly
         disabled
         placeholder={placeHolder}
@@ -120,12 +124,18 @@ function FormComponent({
   useEffect(() => setError(Boolean(isInvalid)), [isInvalid])
 
   const element = elementInstance as CustomInstance;
-  const { label, required, placeHolder, helperText } = element.extraAttributes;
+  const {
+    label,
+    required,
+    placeHolder,
+    helperText ,
+    rows,
+  } = element.extraAttributes;
 
-  const onBlurInputHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+  const onBlurInputHandler = (e: React.FocusEvent<HTMLTextAreaElement>) => {
     if (!submitValue) return;
 
-    const valid = TextFieldFormElement.validate(element, e.target.value);
+    const valid = TextAreaFieldFormElement.validate(element, e.target.value);
     setError(!valid);
     if (!valid) return;
 
@@ -138,7 +148,8 @@ function FormComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input
+      <Textarea
+        rows={rows}
         className={cn(error && "border-red-500")}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => onBlurInputHandler(e)}
@@ -260,6 +271,28 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 Вспомогательный текст. <br/>
                 Отображается под выбранным полем.
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="rows"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Строки {form.watch("rows")}
+              </FormLabel>
+              <FormControl>
+                <Slider
+                  className="pt-2"
+                  min={1}
+                  max={10}
+                  step={1}
+                  onValueChange={(value) => field.onChange(value[0])}
+                  defaultValue={[field.value]}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

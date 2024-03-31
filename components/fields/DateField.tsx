@@ -25,14 +25,19 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { BsFillCalendarDateFill } from "react-icons/bs";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "DateField";
 
 const extraAttributes = {
-    label: "Этикетка",
-    helperText: "Подсказка",
+    label: "Дата",
+    helperText: "Выберите дату",
     required: false,
-    placeHolder: "Заполнитель",
   };
 
 // TODO: translate errors
@@ -40,17 +45,9 @@ const propertiesSchema = z.object({
   label: z.string().min(2).max(50),
   helperText: z.string().max(200),
   required: z.boolean().default(false),
-  placeHolder: z.string().max(50),
 });
 
-export const formSchema = z.object({
-  name: z.string({required_error: "Введите название формы"})
-    .min(1, { message: "Название формы не может быть пустым" })
-    .max(40, { message: "Название формы слишком длинное"}),
-  description: z.string().max(500, { message: "Описание формы слишком длинное"}).optional(),
-});
-
-export const TextFieldFormElement: FormElement = {
+export const DateFieldFormElement: FormElement = {
   type,
   construct: (id:string) => ({
     id,
@@ -60,8 +57,8 @@ export const TextFieldFormElement: FormElement = {
 
   designComponent: DesignComponent,
   designButtonElement: {
-    icon: MdTextFields,
-    label: "Этикетка",
+    icon: BsFillCalendarDateFill,
+    label: "Дата",
   },
 
   formComponent: FormComponent,
@@ -90,11 +87,13 @@ function DesignComponent({ elementInstance }: { elementInstance: FormElementInst
         {label}
         {required && "*"}
       </Label>
-      <Input
-        readOnly
-        disabled
-        placeholder={placeHolder}
-      />
+      <Button
+        variant="outline"
+        className="w-full justify-start text-left font-normal"
+      >
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        <span>Выберите дату</span>
+      </Button>
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -114,7 +113,7 @@ function FormComponent({
   isInvalid?: boolean,
   defaultValues?: string,
 }) {
-  const [value, setValue] = useState(defaultValues || "");
+  const [date, setDate] = useState<Date | undefined>(defaultValues ? new Date(defaultValues) : undefined);
   const [error, setError] = useState(false);
 
   useEffect(() => setError(Boolean(isInvalid)), [isInvalid])
@@ -122,14 +121,15 @@ function FormComponent({
   const element = elementInstance as CustomInstance;
   const { label, required, placeHolder, helperText } = element.extraAttributes;
 
-  const onBlurInputHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+  const onDateSelectHandler = (date:  Date | undefined) => {
+    setDate(date);
+
     if (!submitValue) return;
 
-    const valid = TextFieldFormElement.validate(element, e.target.value);
-    setError(!valid);
-    if (!valid) return;
-
-    submitValue(element.id, e.target.value);
+    const value = date?.toUTCString() || "";
+    const valid = DateFieldFormElement.validate(element, value)
+    setError(!valid)
+    submitValue(element.id, value)
   };
 
   return (
@@ -138,16 +138,33 @@ function FormComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input
-        className={cn(error && "border-red-500")}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={(e) => onBlurInputHandler(e)}
-        placeholder={placeHolder}
-        value={value}
-      />
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn("w-full justify-start text-left font-normal",
+              !date && "text-muted-foreground", error && "border-red-500")}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "PPP") : <span>Выберите дату</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => onDateSelectHandler(date)}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
       {helperText && (
-        <p className={cn("text-[0.8rem] text-muted-foreground",
-          error && "text-red-500")}>
+        <p
+          className={cn(
+            "text-[0.8rem] text-muted-foreground",
+            error && "text-red-500"
+          )}
+        >
           {helperText}
         </p>
       )}
@@ -164,7 +181,6 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
   const {
     required,
     label,
-    placeHolder,
     helperText
   } = extraAttributes;
 
@@ -216,27 +232,6 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
               <FormDescription>
                 Этикетка поля. <br/>
                 Отображается над выбранным полем.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="placeHolder"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Заполнитель
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  onKeyDown={e => handleSubmitByKey(e)}
-                />
-              </FormControl>
-              <FormDescription>
-                Заполнитель поля.
               </FormDescription>
               <FormMessage />
             </FormItem>

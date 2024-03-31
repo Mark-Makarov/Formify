@@ -1,6 +1,23 @@
 import { TextFieldFormElement } from "@/components/fields/TextField";
+import { TitleFieldFormElement } from "@/components/fields/TitleField";
+import { SubtitleFieldFormElement } from "@/components/fields/SubtitleField";
+import { ParagraphFieldFormElement } from "@/components/fields/ParagraphField";
+import { SeparatorFieldFormElement } from "@/components/fields/SeparatorField";
+import { SpacerFieldFormElement } from "@/components/fields/SpacerField";
+import { NumberFieldFormElement } from "@/components/fields/NumberField";
+import { TextAreaFieldFormElement } from "@/components/fields/TextAreaField";
+import { DateFieldFormElement } from "@/components/fields/DateField";
 
-export type ElementsType = "TextField";
+export type ElementsType =
+  "TextField" |
+  "TitleField" |
+  "SubtitleField" |
+  "ParagraphField" |
+  "SeparatorField" |
+  "SpacerField" |
+  "NumberField" |
+  "TextAreaField" |
+  "DateField";
 
 export type SubmitFunction = (key: string, value: string) => void
 
@@ -37,4 +54,12 @@ type FormElementsType = {
 
 export const FormElements: FormElementsType = {
   TextField: TextFieldFormElement,
+  TitleField: TitleFieldFormElement,
+  SubtitleField: SubtitleFieldFormElement,
+  ParagraphField: ParagraphFieldFormElement,
+  SeparatorField: SeparatorFieldFormElement,
+  SpacerField: SpacerFieldFormElement,
+  NumberField: NumberFieldFormElement,
+  TextAreaField: TextAreaFieldFormElement,
+  DateField: DateFieldFormElement,
 };

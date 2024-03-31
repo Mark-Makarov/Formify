@@ -25,14 +25,15 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { Bs123 } from "react-icons/bs";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "NumberField";
 
 const extraAttributes = {
-    label: "Этикетка",
+    label: "Число",
     helperText: "Подсказка",
     required: false,
-    placeHolder: "Заполнитель",
+    placeHolder: "0",
   };
 
 // TODO: translate errors
@@ -50,7 +51,7 @@ export const formSchema = z.object({
   description: z.string().max(500, { message: "Описание формы слишком длинное"}).optional(),
 });
 
-export const TextFieldFormElement: FormElement = {
+export const NumberFieldFormElement: FormElement = {
   type,
   construct: (id:string) => ({
     id,
@@ -60,8 +61,8 @@ export const TextFieldFormElement: FormElement = {
 
   designComponent: DesignComponent,
   designButtonElement: {
-    icon: MdTextFields,
-    label: "Этикетка",
+    icon: Bs123,
+    label: "Число",
   },
 
   formComponent: FormComponent,
@@ -93,6 +94,7 @@ function DesignComponent({ elementInstance }: { elementInstance: FormElementInst
       <Input
         readOnly
         disabled
+        type="number"
         placeholder={placeHolder}
       />
       {helperText && (
@@ -125,7 +127,7 @@ function FormComponent({
   const onBlurInputHandler = (e: React.FocusEvent<HTMLInputElement>) => {
     if (!submitValue) return;
 
-    const valid = TextFieldFormElement.validate(element, e.target.value);
+    const valid = NumberFieldFormElement.validate(element, e.target.value);
     setError(!valid);
     if (!valid) return;
 
@@ -139,6 +141,7 @@ function FormComponent({
         {required && "*"}
       </Label>
       <Input
+        type="number"
         className={cn(error && "border-red-500")}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => onBlurInputHandler(e)}
