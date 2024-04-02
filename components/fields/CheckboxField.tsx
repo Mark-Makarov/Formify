@@ -25,18 +25,15 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { BsFillCalendarDateFill } from "react-icons/bs";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { IoMdCheckbox } from "react-icons/io";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CheckedState } from "@radix-ui/react-menu";
 
-const type: ElementsType = "DateField";
+const type: ElementsType = "CheckboxField";
 
 const extraAttributes = {
-    label: "Дата",
-    helperText: "Выберите дату",
+    label: "Чекбокс",
+    helperText: "Подсказка",
     required: false,
   };
 
@@ -47,7 +44,7 @@ const propertiesSchema = z.object({
   required: z.boolean().default(false),
 });
 
-export const DateFieldFormElement: FormElement = {
+export const CheckboxFieldFormElement: FormElement = {
   type,
   construct: (id:string) => ({
     id,
@@ -57,8 +54,8 @@ export const DateFieldFormElement: FormElement = {
 
   designComponent: DesignComponent,
   designButtonElement: {
-    icon: BsFillCalendarDateFill,
-    label: "Дата",
+    icon: IoMdCheckbox,
+    label: "Чекбокс",
   },
 
   formComponent: FormComponent,
@@ -67,7 +64,7 @@ export const DateFieldFormElement: FormElement = {
   validate: (formElement: FormElementInstance, currentValue: string): boolean => {
     const element = formElement as CustomInstance;
     if (element.extraAttributes.required) {
-      return currentValue.length > 0
+      return currentValue === "true";
     }
     return true;
   }
@@ -79,24 +76,21 @@ type CustomInstance = FormElementInstance & {
 
 function DesignComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { label, required, placeHolder, helperText } = element.extraAttributes;
+  const { label, required, helperText } = element.extraAttributes;
+  const id = `checkbox-${element.id}`;
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <Label>
-        {label}
-        {required && "*"}
-      </Label>
-      <Button
-        variant="outline"
-        className="w-full justify-start text-left font-normal"
-      >
-        <CalendarIcon className="mr-2 h-4 w-4" />
-        <span>Выберите дату</span>
-      </Button>
-      {helperText && (
-        <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
-      )}
+    <div className="flex items-top space-x-2">
+      <Checkbox id={id} />
+      <div className="grid gap-1.5 leading-none">
+        <Label htmlFor={id}>
+          {label}
+          {required && "*"}
+        </Label>
+        {helperText && (
+          <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -113,61 +107,46 @@ function FormComponent({
   isInvalid?: boolean,
   defaultValues?: string,
 }) {
-  const [date, setDate] = useState<Date | undefined>(defaultValues ? new Date(defaultValues) : undefined);
+  const [value, setValue] = useState<boolean>(defaultValues === "true");
   const [error, setError] = useState(false);
 
   useEffect(() => setError(Boolean(isInvalid)), [isInvalid])
 
   const element = elementInstance as CustomInstance;
-  const { label, required, placeHolder, helperText } = element.extraAttributes;
+  const { label, required, helperText } = element.extraAttributes;
+  const id = `checkbox-${element.id}`;
 
-  const onDateSelectHandler = (date:  Date | undefined) => {
-    setDate(date);
+  const onCheckedHandler = (checked: CheckedState) => {
+    let value = false;
+    if (checked) value = true;
 
+    setValue(value);
     if (!submitValue) return;
 
-    const value = date?.toUTCString() || "";
-    const valid = DateFieldFormElement.validate(element, value)
-    setError(!valid)
-    submitValue(element.id, value)
-  };
+    const valid = CheckboxFieldFormElement.validate(element, value.toString());
+    setError(!valid);
+    submitValue(element.id, value.toString())
+  }
 
   return (
-    <div className="flex w-full flex-col gap-2">
-      <Label className={cn(error && "text-red-500")}>
-        {label}
-        {required && "*"}
-      </Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn("w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground", error && "border-red-500")}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Выберите дату</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(date) => onDateSelectHandler(date)}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-      {helperText && (
-        <p
-          className={cn(
-            "text-[0.8rem] text-muted-foreground",
-            error && "text-red-500"
-          )}
-        >
-          {helperText}
-        </p>
-      )}
+    <div className="items-top flex space-x-2">
+      <Checkbox
+        className={cn(error && "border-red-500")}
+        checked={value}
+        id={id}
+        onCheckedChange={(checked) => onCheckedHandler(checked)}
+      />
+      <div className="grid gap-1.5 leading-none">
+        <Label className={cn(error && "text-red-500")} htmlFor={id}>
+          {label}
+          {required && "*"}
+        </Label>
+        {helperText && (
+          <p className={cn("text-[0.8rem] text-muted-foreground", error && "text-red-500")}>
+            {helperText}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -181,6 +160,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
   const {
     required,
     label,
+    placeHolder,
     helperText
   } = extraAttributes;
 

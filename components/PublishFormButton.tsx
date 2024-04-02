@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FaIcons } from "react-icons/fa";
+import { FaIcons, FaSpinner } from "react-icons/fa";
 import { toast } from "@/components/ui/use-toast";
 import { PublishForm } from "@/actions/form";
 import { useRouter } from "next/navigation";
@@ -70,7 +70,7 @@ const PublishFormButton = ({ id }: { id: number }) => {
           >
             Сохранить
             {isLoading && (
-              <FaIcons className="animate-spin" />
+              <FaSpinner className="animate-spin" />
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

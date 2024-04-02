@@ -8,7 +8,6 @@ import Design from "@/components/Design";
 import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import DragOverlayWrapper from "@/components/DragOverlayWrapper";
 import { useEffect, useState } from "react";
-import useDesign from "@/hooks/useDesign";
 import { ImSpinner2 } from "react-icons/im";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,9 +15,10 @@ import { toast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Confetti from "react-confetti";
+import useDesignContext from "@/hooks/useDesignContext";
 
 const FormBuilder = ({ form }: { form: Form }) => {
-  const { setElements } = useDesign();
+  const { setElements, setSelectedElement } = useDesignContext();
   const [isLoading, setIsLoading] = useState(true);
 
   const { main, forms } = process.env.routes;
@@ -50,6 +50,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
 
     const parsedElements = JSON.parse(content);
     setElements(parsedElements);
+    setSelectedElement(null);
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false)
     }, 600)

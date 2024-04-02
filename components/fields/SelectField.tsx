@@ -6,7 +6,6 @@ import {
   FormElementInstance,
   SubmitFunction,
 } from "@/components/FormElements";
-import { MdTextFields } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
@@ -25,29 +24,33 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { BsFillCalendarDateFill } from "react-icons/bs";
+import { RxDropdownMenu } from "react-icons/rx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
+import { toast } from "@/components/ui/use-toast";
 
-const type: ElementsType = "DateField";
+const type: ElementsType = "SelectField";
 
 const extraAttributes = {
-    label: "Дата",
-    helperText: "Выберите дату",
+    label: "Этикетка",
+    helperText: "Подсказка",
     required: false,
+    placeHolder: "Плейсхолдер",
+    options: [],
   };
 
-// TODO: translate errors
+// TODO: translate errors, duplicates in all fields
 const propertiesSchema = z.object({
   label: z.string().min(2).max(50),
   helperText: z.string().max(200),
   required: z.boolean().default(false),
+  placeHolder: z.string().max(50),
+  options: z.array(z.string()).default([]),
 });
 
-export const DateFieldFormElement: FormElement = {
+export const SelectFieldFormElement: FormElement = {
   type,
   construct: (id:string) => ({
     id,
@@ -57,8 +60,8 @@ export const DateFieldFormElement: FormElement = {
 
   designComponent: DesignComponent,
   designButtonElement: {
-    icon: BsFillCalendarDateFill,
-    label: "Дата",
+    icon: RxDropdownMenu,
+    label: "Выбор",
   },
 
   formComponent: FormComponent,
@@ -87,13 +90,11 @@ function DesignComponent({ elementInstance }: { elementInstance: FormElementInst
         {label}
         {required && "*"}
       </Label>
-      <Button
-        variant="outline"
-        className="w-full justify-start text-left font-normal"
-      >
-        <CalendarIcon className="mr-2 h-4 w-4" />
-        <span>Выберите дату</span>
-      </Button>
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+      </Select>
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -113,23 +114,23 @@ function FormComponent({
   isInvalid?: boolean,
   defaultValues?: string,
 }) {
-  const [date, setDate] = useState<Date | undefined>(defaultValues ? new Date(defaultValues) : undefined);
+  const [value, setValue] = useState(defaultValues || "");
   const [error, setError] = useState(false);
 
   useEffect(() => setError(Boolean(isInvalid)), [isInvalid])
 
   const element = elementInstance as CustomInstance;
-  const { label, required, placeHolder, helperText } = element.extraAttributes;
+  const { label, required, placeHolder, helperText, options } = element.extraAttributes;
 
-  const onDateSelectHandler = (date:  Date | undefined) => {
-    setDate(date);
-
+  const onSelectHandler = (value: string) => {
+    setValue(value);
     if (!submitValue) return;
 
-    const value = date?.toUTCString() || "";
-    const valid = DateFieldFormElement.validate(element, value)
-    setError(!valid)
-    submitValue(element.id, value)
+    const valid = SelectFieldFormElement.validate(element, value);
+    setError(!valid);
+    if (!valid) return;
+
+    submitValue(element.id, value);
   };
 
   return (
@@ -138,26 +139,21 @@ function FormComponent({
         {label}
         {required && "*"}
       </Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn("w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground", error && "border-red-500")}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Выберите дату</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(date) => onDateSelectHandler(date)}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
+      <Select
+        defaultValue={value}
+        onValueChange={(value) => onSelectHandler(value)}
+      >
+        <SelectTrigger className={cn("w-full", error && "border-red-500")}>
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option} value={option} >
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {helperText && (
         <p
           className={cn(
@@ -181,13 +177,14 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
   const {
     required,
     label,
+    placeHolder,
     helperText
   } = extraAttributes;
 
-  const { updateElement } = useDesignContext();
+  const { updateElement, setSelectedElement } = useDesignContext();
   const form = useForm<propertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: { ...extraAttributes},
   });
 
@@ -200,6 +197,13 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
       ...elementInstance,
       extraAttributes: { ...values},
     })
+
+    toast({
+      title: "Успешно",
+      description: "Опции сохранены",
+    })
+
+    setSelectedElement(null);
   };
 
   const handleSubmitByKey = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -211,8 +215,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
   return (
     <Form {...form}>
       <form
-      onBlur={form.handleSubmit(handleApplyChanges)}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={form.handleSubmit(handleApplyChanges)}
       className="space-y-3"
       >
         <FormField
@@ -232,6 +235,27 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
               <FormDescription>
                 Этикетка поля. <br/>
                 Отображается над выбранным полем.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="placeHolder"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Плейсхолдер
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  onKeyDown={e => handleSubmitByKey(e)}
+                />
+              </FormControl>
+              <FormDescription>
+                Плейсхолдер.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -259,6 +283,59 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             </FormItem>
           )}
         />
+        <Separator />
+        <FormField
+          control={form.control}
+          name="options"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex justify-between items-center">
+                <FormLabel>
+                  Опции
+                </FormLabel>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    form.setValue("options", field.value.concat("Новая опция"));
+                  }}
+                  className="gap-2"
+                  variant="outline"
+                >
+                  <AiOutlinePlus />
+                  Добавить
+                </Button>
+              </div>
+              <div className="flex flex-col gap-2">
+                {form.watch("options").map((option, index) => (
+                  <div key={index} className="flex items-center justify-between gap-1">
+                    <Input
+                      placeholder=""
+                      value={option}
+                      onChange={(e) => {
+                        field.value[index] = e.target.value;
+                        field.onChange(field.value);
+                      }}
+                    />
+                    <Button variant="ghost" size="icon" onClick={e => {
+                      e.preventDefault();
+                      const newOptions = [...field.value];
+                      newOptions.splice(index, 1);
+                      field.onChange(newOptions);
+                    }}>
+                      <AiOutlineClose />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <FormDescription>
+                Вспомогательный текст. <br/>
+                Отображается под выбранным полем.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Separator />
         <FormField
           control={form.control}
           name="required"
@@ -281,6 +358,10 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             </FormItem>
           )}
         />
+        <Separator />
+        <Button className="w-full" type="submit">
+          Сохранить
+        </Button>
       </form>
     </Form>
   )

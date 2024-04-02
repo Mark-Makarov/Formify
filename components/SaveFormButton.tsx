@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { HiSaveAs } from "react-icons/hi";
-import useDesign from "@/hooks/useDesign";
 import { UpdateFormContent } from "@/actions/form";
 import { toast } from "@/components/ui/use-toast";
 import { useTransition } from "react";
 import { FaSpinner } from "react-icons/fa";
+import useDesignContext from "@/hooks/useDesignContext";
 
 const SaveFormButton = ({ id }: { id: number }) => {
-  const { elements } = useDesign();
+  const { elements } = useDesignContext();
   const [loading, startTransition] = useTransition();
 
   // TODO: replace all texts to another place with re-use

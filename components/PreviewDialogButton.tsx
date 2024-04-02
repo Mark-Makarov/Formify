@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { MdPreview } from "react-icons/md";
-import useDesign from "@/hooks/useDesign";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FormElements } from "@/components/FormElements";
+import useDesignContext from "@/hooks/useDesignContext";
 
 const PreviewDialogButton = () => {
-  const { elements } = useDesign();
+  const { elements } = useDesignContext();
 
   return (
     <Dialog>

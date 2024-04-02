@@ -13,7 +13,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import useDesignContext from "@/hooks/useDesign";
+import useDesignContext from "@/hooks/useDesignContext";
 import {
   Form,
   FormControl,
@@ -35,7 +35,7 @@ const extraAttributes = {
     label: "Поле ввода",
     helperText: "Подсказка",
     required: false,
-    placeHolder: "Заполнитель",
+    placeHolder: "Плейсхолдер",
     rows: 3,
   };
 
@@ -238,7 +238,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Заполнитель
+                Плейсхолдер
               </FormLabel>
               <FormControl>
                 <Input
@@ -247,7 +247,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 />
               </FormControl>
               <FormDescription>
-                Заполнитель поля.
+                Плейсхолдер.
               </FormDescription>
               <FormMessage />
             </FormItem>

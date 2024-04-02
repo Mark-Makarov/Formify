@@ -8,7 +8,7 @@ import {
 import { SidebarButtonElementDragOverlay } from "@/components/SidebarButtonElement";
 import { AiOutlineStop } from "react-icons/ai";
 import { ElementsType, FormElements } from "@/components/FormElements";
-import useDesignContext from "@/hooks/useDesign";
+import useDesignContext from "@/hooks/useDesignContext";
 
 const DragOverlayWrapper = () => {
   const { elements } = useDesignContext();
