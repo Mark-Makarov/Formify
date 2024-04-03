@@ -5,7 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
-import DesignContextProvider from "@/components/context/DesignContext";
+import DesignContextProvider from "@/context/DesignContext";
 import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });

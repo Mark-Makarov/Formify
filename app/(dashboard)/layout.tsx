@@ -1,6 +1,6 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { UserButton } from "@clerk/nextjs";
-import Logo from "@/components/Logo";
+import Logo from "@/components/layout/Logo";
 
 const Layout = ({ children } : { children: React.ReactNode }) => {
   const { NEXT_PUBLIC_CLERK_SIGN_IN_URL } = process.env;

@@ -1,13 +1,13 @@
 import { GetFormContentByUrl } from "@/actions/form";
 import { FormElementInstance } from "@/components/FormElements";
 import FormSubmitComponent from "@/components/FormSubmitComponent";
+import { content } from "@/contents";
 
 const SubmitPage = async ({ params }: { params: { formUrl: string} }) => {
   const form = await GetFormContentByUrl(params.formUrl);
 
   if (!form) {
-    // TODO: extract error messages types to constants
-    throw new Error("form not found")
+    throw new Error(content.formNotFound)
   }
 
   const formContent = JSON.parse(form.content) as FormElementInstance[];

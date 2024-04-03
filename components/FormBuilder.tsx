@@ -4,7 +4,7 @@ import { Form } from "@prisma/client";
 import PreviewDialogButton from "@/components/PreviewDialogButton";
 import SaveFormButton from "@/components/SaveFormButton";
 import PublishFormButton from "@/components/PublishFormButton";
-import Design from "@/components/Design";
+import Design from "@/components/design";
 import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import DragOverlayWrapper from "@/components/DragOverlayWrapper";
 import { useEffect, useState } from "react";

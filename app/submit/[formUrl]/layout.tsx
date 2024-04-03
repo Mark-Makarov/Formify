@@ -1,7 +1,6 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import Logo from "@/components/Logo";
+import Logo from "@/components/layout/Logo";
 
-// TODO: layout, error, loading is duplicates of dashboard/..
 const Layout = ({ children } : { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen min-w-full bg-background max-h-screen h-screen">

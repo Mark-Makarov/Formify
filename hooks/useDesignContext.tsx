@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { DesignContext } from "@/components/context/DesignContext";
+import { DesignContext } from "@/context/DesignContext";
 
 const useDesignContext = () => {
   const context = useContext(DesignContext);

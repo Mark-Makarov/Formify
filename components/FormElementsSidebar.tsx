@@ -17,6 +17,7 @@ const FormElementsSidebar = () => {
     SelectField,
     CheckboxField,
   } = FormElements;
+
   const layoutElements = Object.values({ TitleField, SubtitleField, ParagraphField, SeparatorField, SpacerField });
   const formElements = Object.values({ TextField, NumberField, TextAreaField, DateField, SelectField, CheckboxField });
 

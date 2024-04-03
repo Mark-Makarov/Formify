@@ -29,7 +29,6 @@ import { CreateForm } from "@/actions/form";
 import { BsFileEarmarkPlus } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 
-// TODO: decompose
 const CreateFormButton = () => {
   const { builder } = process.env.routes;
   const router = useRouter();

@@ -1,21 +1,16 @@
 import { GetFormById } from "@/actions/form";
 import FormBuilder from "@/components/FormBuilder";
+import { content } from "@/contents";
 
-interface BuilderPageProps {
-  id: string,
-}
-const BuilderPage = async ({ params }: { params: BuilderPageProps }) => {
+const BuilderPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const form = await GetFormById(Number(id));
 
+  const form = await GetFormById(Number(id));
   if (!form) {
-    // TODO: extract error messages types to constants
-    throw new Error("form not found")
+    throw new Error(content.formNotFound)
   }
 
-  return (
-    <FormBuilder form={form} />
-  );
+  return <FormBuilder form={form} />;
 };
 
 export default BuilderPage;

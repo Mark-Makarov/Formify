@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FaIcons, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { toast } from "@/components/ui/use-toast";
 import { PublishForm } from "@/actions/form";
 import { useRouter } from "next/navigation";

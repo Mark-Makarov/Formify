@@ -3,6 +3,7 @@
 import { currentUser } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { formSchema, formSchemaType } from "@/schemas/form";
+import { content } from "@/contents";
 
 class UserNotFoundError extends Error {}
 
@@ -47,7 +48,7 @@ export async function CreateForm(data: formSchemaType) {
   const { success } = formSchema.safeParse(data);
 
   if (!success) {
-    throw new Error("form not valid");
+    throw new Error(content.formNotValid);
   }
 
   const user = await GetUser();
@@ -61,7 +62,7 @@ export async function CreateForm(data: formSchemaType) {
   });
 
   if (!form) {
-    throw new Error("form save error");
+    throw new Error(content.formSaveError);
   }
 
   return form.id;
