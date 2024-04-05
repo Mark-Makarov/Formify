@@ -54,6 +54,7 @@ export const DateFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "form",
 
   designComponent: DesignComponent,
   designButtonElement: {

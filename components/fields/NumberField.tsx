@@ -58,6 +58,7 @@ export const NumberFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "form",
 
   designComponent: DesignComponent,
   designButtonElement: {

@@ -1,16 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 
 const VisitFormButton = ({ shareUrl }: { shareUrl: string }) => {
-
-  // TODO: refactor
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
-
-  const formShareUrl = `${window?.location.origin}/submit/${shareUrl}`;
+  const formShareUrl = `${process.env.baseUrl}submit/${shareUrl}`;
 
   return (
    <Button

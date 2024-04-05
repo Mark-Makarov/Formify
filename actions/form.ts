@@ -20,7 +20,6 @@ async function GetUser() {
 export async function GetFormStats() {
   const user = await GetUser();
 
-  // TODO: exception handling then DB offline
   const stats = await prisma.form.aggregate({
     where: {
       userId: user.id,

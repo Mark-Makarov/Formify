@@ -28,6 +28,7 @@ export type SubmitFunction = (key: string, value: string) => void
 export type FormElement = {
   type: ElementsType,
   construct: (id:string) => FormElementInstance;
+  place: string;
 
   designComponent: React.FC<{elementInstance: FormElementInstance}>,
   designButtonElement: {

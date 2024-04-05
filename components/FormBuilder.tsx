@@ -11,11 +11,11 @@ import { useEffect, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Confetti from "react-confetti";
 import useDesignContext from "@/hooks/useDesignContext";
+import useClipboard from "@/hooks/useClipboard";
 
 const FormBuilder = ({ form }: { form: Form }) => {
   const { setElements, setSelectedElement } = useDesignContext();
@@ -66,15 +66,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
     )
   }
 
-  // TODO: refactor shareUrl with another places
-  const formShareUrl = `${window.location.origin}/submit/${shareUrl}`;
-
-  const handleCopyShareUrl = () => {
-    navigator.clipboard.writeText(formShareUrl);
-    toast({
-      title: "Ссылка на форму скопирована в буфер обмена",
-    });
-  };
+  const formShareUrl = `${process.env.baseUrl}submit/${shareUrl}`;
 
   if (published) {
     return (
@@ -104,7 +96,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
               />
               <Button
                 className="mt-2 w-full"
-                onClick={handleCopyShareUrl}
+                onClick={() => useClipboard({ data: formShareUrl, text: "Ссылка на форму скопирована в буфер обмена" })}
               >
                 копировать ссылку
               </Button>

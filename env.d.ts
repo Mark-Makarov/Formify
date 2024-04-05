@@ -6,6 +6,7 @@ declare namespace NodeJS {
       main: string,
       forms: string,
       builder: string,
+      baseUrl: string,
     };
   }
 }

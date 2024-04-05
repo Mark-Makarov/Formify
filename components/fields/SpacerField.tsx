@@ -40,6 +40,7 @@ export const SpacerFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "layout",
 
   designComponent: DesignComponent,
   designButtonElement: {

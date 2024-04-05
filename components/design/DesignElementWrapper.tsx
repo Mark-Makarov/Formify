@@ -95,8 +95,7 @@ const DesignElementWrapper = ({ element }: { element: FormElementInstance }) => 
       )}
       <div
         className={cn(
-          "pointer-events-none flex h-[120px] w-full items-center rounded-md" +
-          " bg-accent/40 px-4 py-2",
+          "pointer-events-none flex h-[120px] w-full items-center rounded-md bg-accent/40 px-4 py-2",
           mouseIsOver && "opacity-20"
         )}
       >

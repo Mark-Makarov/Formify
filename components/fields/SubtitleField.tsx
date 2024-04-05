@@ -48,6 +48,7 @@ export const SubtitleFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "layout",
 
   designComponent: DesignComponent,
   designButtonElement: {

@@ -51,6 +51,7 @@ export const CheckboxFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "form",
 
   designComponent: DesignComponent,
   designButtonElement: {

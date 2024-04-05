@@ -11,6 +11,7 @@ const nextConfig = {
     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: ROUTES.main,
     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: ROUTES.main,
     routes: ROUTES,
+    baseUrl: process.env.NODE_ENV === "production" ? "https://formify.astroflare.online/" : "http://localhost:3000/",
   },
 };
 

@@ -46,6 +46,7 @@ export const ParagraphFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "layout",
 
   designComponent: DesignComponent,
   designButtonElement: {

@@ -57,6 +57,7 @@ export const TextFieldFormElement: FormElement = {
     type,
     extraAttributes,
   }),
+  place: "form",
 
   designComponent: DesignComponent,
   designButtonElement: {

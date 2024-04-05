@@ -42,6 +42,7 @@ export const SeparatorFieldFormElement: FormElement = {
     icon: RiSeparator,
     label: "Разделитель",
   },
+  place: "layout",
 
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
