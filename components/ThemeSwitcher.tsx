@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +11,7 @@ const ThemeSwitcher = () => {
 
   useEffect(() => {
     setMounted(true);
-  })
+  }, [])
 
   if (mounted) {
     return (

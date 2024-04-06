@@ -1,4 +1,4 @@
-import SidebarButtonElement from "@/components/SidebarButtonElement";
+import SidebarButtonElement from "@/components/layout/sidebar/SidebarButtonElement";
 import { FormElements } from "@/components/FormElements";
 import { Separator } from "@/components/ui/separator";
 

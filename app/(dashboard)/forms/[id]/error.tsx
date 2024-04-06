@@ -2,10 +2,6 @@
 
 import ErrorView from "@/components/layout/ErrorView";
 
-const Error = () => {
-  return (
-    <ErrorView />
-  );
-};
+const Error = () => <ErrorView />;
 
 export default Error;

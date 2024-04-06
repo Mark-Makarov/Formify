@@ -10,7 +10,6 @@ const SaveFormButton = ({ id }: { id: number }) => {
   const { elements } = useDesignContext();
   const [loading, startTransition] = useTransition();
 
-  // TODO: replace all texts to another place with re-use
   const updateFormContent = async () => {
     try {
       const convertedElements = JSON.stringify(elements);

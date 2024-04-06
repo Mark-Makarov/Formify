@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { AiOutlineClose } from "react-icons/ai";
 import { Separator } from "@/components/ui/separator";
 
-const PropertiesFormSidebar = () => {
+const FormPropertiesSidebar = () => {
   const { selectedElement, setSelectedElement } = useDesignContext();
 
   if (!selectedElement) return null;
@@ -31,4 +31,4 @@ const PropertiesFormSidebar = () => {
 );
 };
 
-export default PropertiesFormSidebar;
+export default FormPropertiesSidebar;

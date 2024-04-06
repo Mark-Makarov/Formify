@@ -2,7 +2,7 @@ import { GetFormStats } from "@/actions/form";
 import { Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
 import CreateFormButton from "@/components/CreateFormButton";
-import StatsCardsList from "../../components/stats-cards-list";
+import StatsCardsList from "@/components/stats-cards-list";
 import FormCardsList from "@/components/form-cards-list";
 import FormCardSkeleton from "@/components/form-cards-list/FormCardSkeleton";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import DesignSidebar from "@/components/DesignSidebar";
+import DesignSidebar from "@/components/layout/sidebar";
 import { useDroppable } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 import useDesignContext from "@/hooks/useDesignContext";

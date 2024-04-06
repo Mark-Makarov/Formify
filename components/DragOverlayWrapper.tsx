@@ -5,7 +5,7 @@ import {
   DragStartEvent,
   useDndMonitor,
 } from "@dnd-kit/core";
-import { SidebarButtonElementDragOverlay } from "@/components/SidebarButtonElement";
+import { SidebarButtonElementDragOverlay } from "@/components/layout/sidebar/SidebarButtonElement";
 import { AiOutlineStop } from "react-icons/ai";
 import { ElementsType, FormElements } from "@/components/FormElements";
 import useDesignContext from "@/hooks/useDesignContext";
