@@ -3,28 +3,8 @@
 import {
   ElementsType,
   FormElement,
-  FormElementInstance,
-  SubmitFunction,
-} from "@/components/FormElements";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import useDesignContext from "@/hooks/useDesignContext";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
-import { LuHeading1 } from "react-icons/lu";
 import { RiSeparator } from "react-icons/ri";
 import { Separator } from "@/components/ui/separator";
 
@@ -50,7 +30,7 @@ export const SeparatorFieldFormElement: FormElement = {
   validate: () => true,
 };
 
-function DesignComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function DesignComponent() {
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label className="text-muted-foreground">
@@ -70,5 +50,5 @@ function FormComponent() {
 function PropertiesComponent() {
  return (
    <p>Нет настраиваемых свойств для этого элемента</p>
- )
+ );
 }

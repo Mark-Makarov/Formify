@@ -1,5 +1,5 @@
 import { GetFormContentByUrl } from "@/actions/form";
-import { FormElementInstance } from "@/components/FormElements";
+import { FormElementInstance } from "@/components/form-elements";
 import FormSubmitComponent from "@/components/FormSubmitComponent";
 import { content } from "@/contents";
 

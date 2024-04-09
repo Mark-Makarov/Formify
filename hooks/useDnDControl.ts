@@ -1,6 +1,6 @@
 import useDesignContext from "@/hooks/useDesignContext";
 import { DragEndEvent, useDndMonitor } from "@dnd-kit/core";
-import { ElementsType, FormElements } from "@/components/FormElements";
+import { ElementsType, FormElements } from "@/components/form-elements";
 import { generateId } from "@/lib/generateId";
 import { content } from "@/contents";
 

@@ -5,8 +5,7 @@ import {
   FormElement,
   FormElementInstance,
   SubmitFunction,
-} from "@/components/FormElements";
-import { MdTextFields } from "react-icons/md";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
@@ -36,19 +35,12 @@ const extraAttributes = {
     placeHolder: "0",
   };
 
-// TODO: translate errors
 const propertiesSchema = z.object({
-  label: z.string().min(2).max(50),
-  helperText: z.string().max(200),
+  label: z.string().min(4, { message: "Заголовок не может быть короче 4 символов"})
+    .max(50, { message: "Заголовок не может быть длиннее 50 символов"}),
+  helperText: z.string().max(200, { message: "Подсказка не может быть длиннее 200 символов"}),
   required: z.boolean().default(false),
-  placeHolder: z.string().max(50),
-});
-
-export const formSchema = z.object({
-  name: z.string({required_error: "Введите название формы"})
-    .min(1, { message: "Название формы не может быть пустым" })
-    .max(40, { message: "Название формы слишком длинное"}),
-  description: z.string().max(500, { message: "Описание формы слишком длинное"}).optional(),
+  placeHolder: z.string().max(50, { message: "Плейсхолдер не может быть длиннее 50 символов"}),
 });
 
 export const NumberFieldFormElement: FormElement = {
@@ -165,12 +157,6 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
     id,
     extraAttributes,
   } = elementInstance as CustomInstance;
-  const {
-    required,
-    label,
-    placeHolder,
-    helperText
-  } = extraAttributes;
 
   const { updateElement } = useDesignContext();
   const form = useForm<propertiesFormSchemaType>({
@@ -209,7 +195,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Этикетка
+                Заголовок
               </FormLabel>
               <FormControl>
                 <Input
@@ -218,7 +204,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 />
               </FormControl>
               <FormDescription>
-                Этикетка поля. <br/>
+                Заголовок поля. <br/>
                 Отображается над выбранным полем.
               </FormDescription>
               <FormMessage />

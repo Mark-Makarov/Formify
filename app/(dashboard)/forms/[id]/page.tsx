@@ -3,7 +3,7 @@ import VisitFormButton from "@/components/VisitFormButton";
 import FormLinkShare from "@/components/FormLinkShare";
 import { content } from "@/contents";
 import StatsCardsList from "@/components/stats-cards-list";
-import SubmissionsTable from "@/components/submissions-table/SubmissionsTable";
+import SubmissionsTable from "@/components/submissions-table";
 
 const FormDetailPage = async ({ params }: { params: { id: string } }) => {
   const form = await GetFormById(Number(params.id));

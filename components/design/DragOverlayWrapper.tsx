@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/core";
 import { SidebarButtonElementDragOverlay } from "@/components/layout/sidebar/SidebarButtonElement";
 import { AiOutlineStop } from "react-icons/ai";
-import { ElementsType, FormElements } from "@/components/FormElements";
+import { ElementsType, FormElements } from "@/components/form-elements";
 import useDesignContext from "@/hooks/useDesignContext";
 
 const DragOverlayWrapper = () => {

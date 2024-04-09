@@ -1,5 +1,5 @@
 import { GetFromWithSubmissions } from "@/actions/form";
-import { ElementsType, FormElementInstance } from "@/components/FormElements";
+import { ElementsType, FormElementInstance } from "@/components/form-elements";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format, formatDistance } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -106,9 +106,11 @@ const RowCell = ({ type, value }: { type: ElementsType, value: string }) => {
 
   switch (type) {
     case "DateField":
-      if (!value) break;
-      const date = new Date(value);
-      node = <Badge variant="outline">{format(date, "dd/MM/yyyy")}</Badge>;
+      if (!value) {
+        const date = new Date(value);
+        node = <Badge variant="outline">{format(date, "dd/MM/yyyy")}</Badge>;
+        break;
+      }
       break;
     case "CheckboxField":
       const checked = value === "true";

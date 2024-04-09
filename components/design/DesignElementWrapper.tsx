@@ -1,7 +1,7 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 import useDesignContext from "@/hooks/useDesignContext";
-import { FormElements, FormElementInstance } from "@/components/FormElements";
+import { FormElements, FormElementInstance } from "@/components/form-elements";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BiSolidTrash } from "react-icons/bi";

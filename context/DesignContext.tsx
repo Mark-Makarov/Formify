@@ -1,6 +1,6 @@
 "use client";
 
-import { FormElementInstance } from "@/components/FormElements";
+import { FormElementInstance } from "@/components/form-elements";
 import { createContext, useState } from "react";
 
 export type DesignContextType = {

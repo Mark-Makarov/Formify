@@ -4,27 +4,21 @@ import {
   ElementsType,
   FormElement,
   FormElementInstance,
-  SubmitFunction,
-} from "@/components/FormElements";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useDesignContext from "@/hooks/useDesignContext";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
-import { LuHeading1 } from "react-icons/lu";
 import { BsTextParagraph } from "react-icons/bs";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -34,9 +28,8 @@ const extraAttributes = {
     text: "Текст",
   };
 
-// TODO: translate errors
 const propertiesSchema = z.object({
-  text: z.string().min(2).max(500),
+  text: z.string().min(2).max(1000, { message: "Текст не может быть длиннее 1000 символов"}),
 });
 
 export const ParagraphFieldFormElement: FormElement = {

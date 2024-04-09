@@ -1,5 +1,5 @@
 import SidebarButtonElement from "@/components/layout/sidebar/SidebarButtonElement";
-import { FormElements } from "@/components/FormElements";
+import { FormElements } from "@/components/form-elements";
 import { Separator } from "@/components/ui/separator";
 
 const FormElementsSidebar = () => {

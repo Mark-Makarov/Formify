@@ -4,7 +4,7 @@ import {
   ElementsType,
   FormElement,
   FormElementInstance,
-} from "@/components/FormElements";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -28,9 +28,9 @@ const extraAttributes = {
     height: 20,
   };
 
-// TODO: translate errors
 const propertiesSchema = z.object({
-  height: z.number().min(5).max(200),
+  height: z.number().min(5, { message: "Отступ не может быть менее 5px символов"})
+    .max(200, { message: "Отступ не может быть более 200px символов"}),
 });
 
 export const SpacerFieldFormElement: FormElement = {

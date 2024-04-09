@@ -1,6 +1,6 @@
 "use client";
 
-import { FormElementInstance, FormElements } from "@/components/FormElements";
+import { FormElementInstance, FormElements } from "@/components/form-elements";
 import { Button } from "@/components/ui/button";
 import { HiCursorClick } from "react-icons/hi";
 import { useRef, useState, useTransition } from "react";

@@ -5,7 +5,7 @@ import {
   FormElement,
   FormElementInstance,
   SubmitFunction,
-} from "@/components/FormElements";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
@@ -34,20 +34,20 @@ import { toast } from "@/components/ui/use-toast";
 const type: ElementsType = "SelectField";
 
 const extraAttributes = {
-    label: "Этикетка",
+    label: "Заголовок",
     helperText: "Подсказка",
     required: false,
     placeHolder: "Плейсхолдер",
     options: [],
   };
 
-// TODO: translate errors, duplicates in all fields
 const propertiesSchema = z.object({
-  label: z.string().min(2).max(50),
-  helperText: z.string().max(200),
+  label: z.string().min(4, { message: "Заголовок не может быть короче 4 символов"})
+    .max(50, { message: "Заголовок не может быть длиннее 50 символов"}),
+  helperText: z.string().max(200, { message: "Подсказка не может быть длиннее 200 символов"}),
   required: z.boolean().default(false),
-  placeHolder: z.string().max(50),
-  options: z.array(z.string()).default([]),
+  placeHolder: z.string().max(50, { message: "Плейсхолдер не может быть длиннее 50 символов"}),
+  options: z.array(z.string()).max(12,{ message: "Максимальное кол-во опций - 12"} ).default([]),
 });
 
 export const SelectFieldFormElement: FormElement = {
@@ -175,12 +175,6 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
     id,
     extraAttributes,
   } = elementInstance as CustomInstance;
-  const {
-    required,
-    label,
-    placeHolder,
-    helperText
-  } = extraAttributes;
 
   const { updateElement, setSelectedElement } = useDesignContext();
   const form = useForm<propertiesFormSchemaType>({
@@ -225,7 +219,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Этикетка
+                Заголовок
               </FormLabel>
               <FormControl>
                 <Input
@@ -234,7 +228,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 />
               </FormControl>
               <FormDescription>
-                Этикетка поля. <br/>
+                Заголовок поля. <br/>
                 Отображается над выбранным полем.
               </FormDescription>
               <FormMessage />
@@ -297,7 +291,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
-                    form.setValue("options", field.value.concat("Новая опция"));
+                    if (field.value.length < 12) form.setValue("options", field.value.concat("Новая опция"));
                   }}
                   className="gap-2"
                   variant="outline"

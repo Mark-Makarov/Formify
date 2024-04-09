@@ -1,5 +1,5 @@
 import { GetFormById } from "@/actions/form";
-import FormBuilder from "@/components/FormBuilder";
+import FormBuilder from "@/components/design/FormBuilder";
 import { content } from "@/contents";
 
 const BuilderPage = async ({ params }: { params: { id: string } }) => {

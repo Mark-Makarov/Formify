@@ -4,26 +4,22 @@ import {
   ElementsType,
   FormElement,
   FormElementInstance,
-  SubmitFunction,
-} from "@/components/FormElements";
+} from "@/components/form-elements";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useDesignContext from "@/hooks/useDesignContext";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
 import { LuHeading1 } from "react-icons/lu";
 
 const type: ElementsType = "TitleField";
@@ -32,16 +28,9 @@ const extraAttributes = {
     title: "Заголовок",
   };
 
-// TODO: translate errors
 const propertiesSchema = z.object({
-  title: z.string().min(2).max(50),
-});
-
-export const formSchema = z.object({
-  name: z.string({required_error: "Введите название формы"})
-    .min(1, { message: "Название формы не может быть пустым" })
-    .max(40, { message: "Название формы слишком длинное"}),
-  description: z.string().max(500, { message: "Описание формы слишком длинное"}).optional(),
+  title: z.string().min(2, { message: "Заголовок не может быть короче 2 символов"})
+    .max(50, { message: "Заголовок не может быть длиннее 50 символов"}),
 });
 
 export const TitleFieldFormElement: FormElement = {
@@ -100,7 +89,6 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
     id,
     extraAttributes,
   } = elementInstance as CustomInstance;
-  const { title } = extraAttributes;
 
   const { updateElement } = useDesignContext();
   const form = useForm<propertiesFormSchemaType>({

@@ -1,5 +1,5 @@
 import useDesignContext from "@/hooks/useDesignContext";
-import { FormElements } from "@/components/FormElements";
+import { FormElements } from "@/components/form-elements";
 import { Button } from "@/components/ui/button";
 import { AiOutlineClose } from "react-icons/ai";
 import { Separator } from "@/components/ui/separator";
