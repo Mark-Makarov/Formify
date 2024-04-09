@@ -1,13 +1,20 @@
 import Confetti from "react-confetti";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import useClipboard from "@/hooks/useClipboard";
 import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { toast } from "@/components/ui/use-toast";
 
 const SuccessPublishForm = ({ shareUrl, id }: { shareUrl: string, id: number }) => {
   const { main, forms } = process.env.routes;
   const formShareUrl = `${process.env.baseUrl}submit/${shareUrl}`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(formShareUrl);
+    toast({
+      title: "Ссылка на форму скопирована в буфер обмена",
+    });
+  };
 
   return (
     <>
@@ -36,7 +43,7 @@ const SuccessPublishForm = ({ shareUrl, id }: { shareUrl: string, id: number }) 
             />
             <Button
               className="mt-2 w-full"
-              onClick={() => useClipboard({ data: formShareUrl, text: "Ссылка на форму скопирована в буфер обмена" })}
+              onClick={copyToClipboard}
             >
               копировать ссылку
             </Button>
