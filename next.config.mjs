@@ -6,6 +6,7 @@ const nextConfig = {
   experimental: {
     serverActions: { allowedOrigins: ["formify.astroflare.online", "localhost:3458"], },
   },
+  serverActions: { allowedOrigins: ["formify.astroflare.online", "localhost:3458"], },
   env: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
