@@ -11,7 +11,10 @@ const Layout = ({ children } : { children: React.ReactNode }) => {
         <Logo />
         <div className="flex gap-4 items-center">
           <ThemeSwitcher />
-          <UserButton afterMultiSessionSingleSignOutUrl={NEXT_PUBLIC_CLERK_SIGN_IN_URL} />
+          <UserButton
+            afterSignOutUrl={NEXT_PUBLIC_CLERK_SIGN_IN_URL}
+            afterMultiSessionSingleSignOutUrl={NEXT_PUBLIC_CLERK_SIGN_IN_URL}
+          />
         </div>
       </nav>
       <main className="flex w-full flex-grow">

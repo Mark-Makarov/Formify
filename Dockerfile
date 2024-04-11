@@ -9,6 +9,7 @@ FROM node:18.18.2
 WORKDIR /app/
 COPY package.json yarn.lock  ./
 COPY --from=builder /app/node_modules/ ./node_modules/
+COPY --from=builder --chown=nextjs:nodejs /app/.next/server/edge-chunks ./.next/server/edge-chunks
 COPY . .
 
 EXPOSE 3458
@@ -21,7 +22,10 @@ ARG DATABASE_URL
 ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
 ENV CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
 ENV DATABASE_URL=${DATABASE_URL}
-
+ENV NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+ENV NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+ENV NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+ENV NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 
 RUN yarn generate:prisma
 RUN yarn build
