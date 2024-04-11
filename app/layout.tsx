@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import { ruRU } from "@clerk/localizations";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
