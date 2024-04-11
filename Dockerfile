@@ -1,11 +1,11 @@
-FROM node:18-alpine as builder
+FROM node:18.18.2-alpine as builder
 WORKDIR /app/
 
 COPY package.json yarn.lock ./
 
 RUN yarn install --immutable
 
-FROM node:18
+FROM node:18.18.2
 WORKDIR /app/
 COPY package.json yarn.lock  ./
 COPY --from=builder /app/node_modules/ ./node_modules/
