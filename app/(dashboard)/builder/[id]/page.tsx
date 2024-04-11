@@ -6,6 +6,7 @@ const BuilderPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
   const form = await GetFormById(Number(id));
+  console.log(`form in BuilderPage: ${BuilderPage}`);
   if (!form) {
     throw new Error(content.formNotFound)
   }

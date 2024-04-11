@@ -82,15 +82,21 @@ export async function GetForms(){
 }
 
 export async function GetFormById(id: number) {
+  console.log(`id in GetFormById: ${id}`);
   const user = await GetUser();
-  const form = await prisma.form.findUnique({
-    where: {
-      userId: user.id,
-      id,
-    },
-  })
-
-  return form;
+  console.log(`user in GetFormById: ${user}`);
+  try {
+    const form = await prisma.form.findUnique({
+      where: {
+        userId: user.id,
+        id,
+      },
+    })
+    console.log(`form in GetFormById: ${form}`);
+    return form;
+  } catch (e) {
+    console.log(`catch (e): ${e}`);
+  }
 }
 
 export async function UpdateFormContent(id: number, content: string) {
