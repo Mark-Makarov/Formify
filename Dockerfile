@@ -8,8 +8,7 @@ RUN yarn install --immutable
 FROM node:18.18.2
 WORKDIR /app/
 COPY package.json yarn.lock  ./
-COPY --from=builder /app/node_modules/ ./node_modules/
-COPY --from=builder --chown=nextjs:nodejs /app/.next/server/edge-chunks ./.next/server/edge-chunks
+COPY --from=builder /app/node_modules/ ./node_modules/ /app/.next/ ./.next/
 COPY . .
 
 EXPOSE 3458
