@@ -3,7 +3,9 @@ import ROUTES from "./constants/routes.js";
 // @ts-check
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverActions: { allowedOrigins: ["formify.astroflare.online", "localhost:3458"], },
+  experimental: {
+    serverActions: { allowedOrigins: ["formify.astroflare.online", "localhost:3458"], },
+  },
   trailingSlash: false,
   env: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
