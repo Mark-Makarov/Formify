@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 3458",
-    "start:prod": "yarn migrate:prisma && next start -p 3458",
+    "start:prod": "yarn migrate:prisma_prod && next start -p 3458",
     "lint": "next lint",
     "generate:prisma": "npx prisma generate",
     "migrate:prisma_dev": "npx prisma migrate dev",
