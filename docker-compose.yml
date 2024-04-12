@@ -4,9 +4,6 @@ services:
     container_name: Formify
     entrypoint: yarn start:prod
     restart: always
-    environment:
-      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-      - CLERK_SECRET_KEY=$CLERK_SECRET_KEY
     build:
       context: .
       dockerfile: Dockerfile
