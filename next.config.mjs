@@ -4,7 +4,7 @@ import ROUTES from "./constants/routes.js";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   serverActions: {
-    allowedOrigins: ["localhost:3000", "localhost:3458", "formify.astroflare.online"],
+    allowedOrigins: ["localhost:3000", "localhost:3458", "formify.astroflare.online", "*.astroflare.online"],
   },
   env: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
