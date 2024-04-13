@@ -17,10 +17,10 @@ jobs:
     steps:
       - name: Stop and remove containers, networks
         run: |
-          if docker ps -a | grep Formify ; then
-            docker rm -f Formify
+          if docker ps -a | grep formify ; then
+            docker rm -f formify
           else
-            echo "Container Formify does not exist"
+            echo "Container formify does not exist"
           fi
   deploy:
     runs-on: self-hosted

@@ -1,7 +1,7 @@
 version: '3'
 services:
   nextjs:
-    container_name: Formify
+    container_name: formify
     entrypoint: yarn start:prod
     restart: always
     environment:
@@ -21,7 +21,7 @@ services:
       - postgres
 
   postgres:
-    container_name: Postgres
+    container_name: postgres
     image: postgres
     restart: always
     environment:
