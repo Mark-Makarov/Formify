@@ -3,6 +3,9 @@ import ROUTES from "./constants/routes.js";
 // @ts-check
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverActions: {
+    allowedOrigins: ["localhost:3000", "localhost:3458", "formify.astroflare.online"],
+  },
   env: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
